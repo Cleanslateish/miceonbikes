@@ -40,8 +40,8 @@ def placeCells():
             nacrtaj(placedCell)
 
 def mazeCreation():
-    finishX = random.randrange(2,16)
-    finishY = random.randrange(2,16)
+    finishX = random.randint(2,15)
+    finishY = random.randint(2,15)
     startPos = [0,0]
 
     #INITIAL 
@@ -70,46 +70,42 @@ def mazeCreation():
 
 def connectStartFinish(startPos, finishPos):
     #DECIDE WHICH CELL STARTS THE PATH
-    possibleStartPath = []
+    possibleStartChoice = []
+
+    top =       [finishPos[0], finishPos[1] - 1]    #TOP
+    topRight =  [finishPos[0] + 1, finishPos[1] - 1]#TOP RIGHT
+    topLeft =   [finishPos[0] - 1, finishPos[1] - 1]#TOP LEFT
+    down =      [finishPos[0], finishPos[1] + 1]    #DOWN
+    downRight = [finishPos[0] + 1, finishPos[1] + 1]#DOWN RIGHT
+    downLeft =  [finishPos[0] - 1, finishPos[1] + 1]#DOWN LEFT
+    left =      [finishPos[0] - 1, finishPos[1]]    #LEFT
+    right =     [finishPos[0] + 1, finishPos[1]]    #RIGHT
     
-    if(finishPos[0] >= 0 and finishPos[0] <= 15 and finishPos[1] >= 0 and finishPos[1] <= 15):
-        top =       [finishPos[0], finishPos[1] - 1]    #TOP
-        topRight =  [finishPos[0] + 1, finishPos[1] - 1]#TOP RIGHT
-        topLeft =   [finishPos[0] - 1, finishPos[1] - 1]#TOP LEFT
-
-        down =      [finishPos[0], finishPos[1] + 1]    #DOWN
-        downRight = [finishPos[0] + 1, finishPos[1] + 1]#DOWN RIGHT
-        downLeft =  [finishPos[0] - 1, finishPos[1] + 1]#DOWN LEFT
-
-        left =      [finishPos[0] - 1, finishPos[1]]    #LEFT
-
-        right =     [finishPos[0] + 1, finishPos[1]]    #RIGHT
 
 
-        possibleStartPath.append(top)
-        possibleStartPath.append(topRight)
-        possibleStartPath.append(topLeft)
-        
-        possibleStartPath.append(down)
-        possibleStartPath.append(downRight)
-        possibleStartPath.append(downLeft)
-        
-        possibleStartPath.append(left)
-        
-        possibleStartPath.append(right)
+    possibleStartChoice.append(top)
+    possibleStartChoice.append(topRight)
+    possibleStartChoice.append(topLeft)
+    possibleStartChoice.append(down)
+    possibleStartChoice.append(downRight)
+    possibleStartChoice.append(downLeft)
+    possibleStartChoice.append(right)
+    possibleStartChoice.append(left)
+
+    for i in range(8):
+        for startChoice in possibleStartChoice:
+            if(startChoice[0]  > 15 or startChoice[1] > 15 or startChoice[0]  < 0 or startChoice[1] < 0):
+                print(possibleStartChoice)
+                print(startChoice)
+                possibleStartChoice.remove(startChoice)
 
 
-
-        
-
-    selector = random.randint(0, len(possibleStartPath) - 1)
-
+    selector = random.randint(0, len(possibleStartChoice) - 1)
+ 
     for element in cells:
-        if(element.posInfo == possibleStartPath[selector]):
+        if(element.posInfo == possibleStartChoice[selector]):
             element.tag = "walk"
-            print(selector)
-            print(possibleStartPath[selector])
-            print(possibleStartPath)
+            print(possibleStartChoice)
 
 def tagCells():
     for element in cells:
