@@ -15,11 +15,11 @@ cells = []
 class Cell:
     visina = 32
     duzina = 32
-    def __init__(self, posX, posY, posInfo, color, tag):
+    color = (0,0,0)
+    def __init__(self, posX, posY, posInfo, tag):
         self.posX = posX
         self.posY = posY
         self.posInfo = posInfo
-        self.color = color
         self.tag = tag
        
 
@@ -35,40 +35,107 @@ def nacrtaj(celija):
 def placeCells():
     for positionX in range(0, 16):
         for positionY in range(0, 16):
-            placedCell = Cell(positionX, positionY, [positionX, positionY], (50,200,50), "walk")
+            placedCell = Cell(positionX, positionY, [positionX, positionY], "wall")
             cells.append(placedCell)
             nacrtaj(placedCell)
 
 def mazeCreation():
-    # START
+    finishX = random.randrange(2,16)
+    finishY = random.randrange(2,16)
+    startPos = [0,0]
+
+    #INITIAL 
+    connectStartFinish(1,[finishX, finishY])
+
+
+    #GENERATE
     for element in cells:
-        if(element.posInfo == [0,0]):
-            element.color = ("green")
+        # START
+        if(element.posInfo == startPos):
             element.tag = "start"
-            nacrtaj(element)
 
-    # WALLS
-    for i in range(16):
-        randomNumA = random.randrange(1,16)
-        randomNumB = random.randrange(1,16) 
-
-        for element in cells:
-            if(element.posInfo == [randomNumA, randomNumB]):
-                element.color = ('gray')
-                element.tag = "wall"
-                nacrtaj(element)
-    
-    #FINISH
-    for element in cells:
-        if(element.posInfo == [randomNumA, randomNumB]):
-            element.color = ('blue')
+        #FINISH
+        if(element.posInfo == [finishX, finishY]):
             element.tag = "finish"
-            nacrtaj(element)
+            #print(finishX, finishY)
+
+
+        #if(finishX < finishY and finishX != 0):
+            #if(element.posInfo == [finishX - 1, finishY]):
+                #element.tag = "walk"
+       # elif(finishY < finishX and finishY != 0):
+           # if(element.posInfo == [finishX, finishY - 1]):
+                #element.tag = "walk"
+
+
+def connectStartFinish(startPos, finishPos):
+    #DECIDE WHICH CELL STARTS THE PATH
+    possibleStartPath = []
+    
+    if(finishPos[0] >= 0 and finishPos[0] <= 15 and finishPos[1] >= 0 and finishPos[1] <= 15):
+        top =       [finishPos[0], finishPos[1] - 1]    #TOP
+        topRight =  [finishPos[0] + 1, finishPos[1] - 1]#TOP RIGHT
+        topLeft =   [finishPos[0] - 1, finishPos[1] - 1]#TOP LEFT
+
+        down =      [finishPos[0], finishPos[1] + 1]    #DOWN
+        downRight = [finishPos[0] + 1, finishPos[1] + 1]#DOWN RIGHT
+        downLeft =  [finishPos[0] - 1, finishPos[1] + 1]#DOWN LEFT
+
+        left =      [finishPos[0] - 1, finishPos[1]]    #LEFT
+
+        right =     [finishPos[0] + 1, finishPos[1]]    #RIGHT
+
+
+        possibleStartPath.append(top)
+        possibleStartPath.append(topRight)
+        possibleStartPath.append(topLeft)
+        
+        possibleStartPath.append(down)
+        possibleStartPath.append(downRight)
+        possibleStartPath.append(downLeft)
+        
+        possibleStartPath.append(left)
+        
+        possibleStartPath.append(right)
+
+
+
         
 
+    selector = random.randint(0, len(possibleStartPath) - 1)
+
+    for element in cells:
+        if(element.posInfo == possibleStartPath[selector]):
+            element.tag = "walk"
+            print(selector)
+            print(possibleStartPath[selector])
+            print(possibleStartPath)
+
+def tagCells():
+    for element in cells:
+        if(element.tag == "start"):
+            element.color = "green"
+            nacrtaj(element)
+
+        if(element.tag == "walk"):
+            element.color = (80,200,80)
+            nacrtaj(element)
+
+        if(element.tag == "wall"):
+            element.color = "gray"
+            nacrtaj(element)
+
+        if(element.tag == "finish"):
+            element.color = (3, 161, 252)
+            nacrtaj(element)
+
+
+    
+    
 
 placeCells()
 mazeCreation() 
+tagCells()
 
 while running:
     # poll for events
