@@ -57,7 +57,6 @@ def mazeCreation():
         #FINISH
         if(element.posInfo == [finishX, finishY]):
             element.tag = "finish"
-            #print(finishX, finishY)
 
 
         #if(finishX < finishY and finishX != 0):
@@ -69,28 +68,29 @@ def mazeCreation():
 
 
 def connectStartFinish(startPos, finishPos):
+    susedi = []
+
+
     #DECIDE WHICH CELL STARTS THE PATH
     possibleStartChoice = []
 
-    top =       [finishPos[0], finishPos[1] - 1]    #TOP
+    top =       [finishPos[0]    , finishPos[1] - 1]#TOP
     topRight =  [finishPos[0] + 1, finishPos[1] - 1]#TOP RIGHT
-    topLeft =   [finishPos[0] - 1, finishPos[1] - 1]#TOP LEFT
-    down =      [finishPos[0], finishPos[1] + 1]    #DOWN
+    right =     [finishPos[0] + 1, finishPos[1]    ]#RIGHT
     downRight = [finishPos[0] + 1, finishPos[1] + 1]#DOWN RIGHT
+    down =      [finishPos[0]    , finishPos[1] + 1]#DOWN
     downLeft =  [finishPos[0] - 1, finishPos[1] + 1]#DOWN LEFT
-    left =      [finishPos[0] - 1, finishPos[1]]    #LEFT
-    right =     [finishPos[0] + 1, finishPos[1]]    #RIGHT
+    left =      [finishPos[0] - 1, finishPos[1]    ]#LEFT
+    topLeft =   [finishPos[0] - 1, finishPos[1] - 1]#TOP LEFT
     
-
-
     possibleStartChoice.append(top)
     possibleStartChoice.append(topRight)
-    possibleStartChoice.append(topLeft)
-    possibleStartChoice.append(down)
-    possibleStartChoice.append(downRight)
-    possibleStartChoice.append(downLeft)
     possibleStartChoice.append(right)
+    possibleStartChoice.append(downRight)
+    possibleStartChoice.append(down)
+    possibleStartChoice.append(downLeft)
     possibleStartChoice.append(left)
+    possibleStartChoice.append(topLeft)
 
     for i in range(8):
         for startChoice in possibleStartChoice:
