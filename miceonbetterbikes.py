@@ -40,11 +40,11 @@ def placeCells():
             nacrtaj(placedCell)
 
 def mazeCreation():
-    finishX = 15
-    finishY = 15
+    #finishX = 15
+    #finishY = 15
 
-    #finishX = random.randint(2,15)
-    #finishY = random.randint(2,15)
+    finishX = random.randint(2,15)
+    finishY = random.randint(2,15)
     startPoint = [0,0]
 
     #INITIAL 
