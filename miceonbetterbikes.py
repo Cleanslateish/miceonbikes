@@ -40,8 +40,11 @@ def placeCells():
             nacrtaj(placedCell)
 
 def mazeCreation():
-    finishX = random.randint(2,15)
-    finishY = random.randint(2,15)
+    finishX = 15
+    finishY = 15
+
+    #finishX = random.randint(2,15)
+    #finishY = random.randint(2,15)
     startPoint = [0,0]
 
     #INITIAL 
@@ -58,13 +61,6 @@ def mazeCreation():
         if(element.posInfo == [finishX, finishY]):
             element.tag = "finish"
 
-
-        #if(finishX < finishY and finishX != 0):
-            #if(element.posInfo == [finishX - 1, finishY]):
-                #element.tag = "walk"
-       # elif(finishY < finishX and finishY != 0):
-           # if(element.posInfo == [finishX, finishY - 1]):
-                #element.tag = "walk"
 
 def findNeighbours(currentCell):
     neighbourList = []
@@ -90,39 +86,42 @@ def findNeighbours(currentCell):
 
 def endPoint(finishPos):
     #DECIDE WHICH CELL STARTS THE PATH
-    selectedStartChoice = []
+    endPointPos = []
 
     possibleStartChoice = findNeighbours(finishPos)
 
+    #REMOVE ANY DIRECTIONS THAT ARE OUT OF BOUNDS
     for i in range(8):
         for startChoice in possibleStartChoice:
             if(startChoice[0]  > 15 or startChoice[1] > 15 or startChoice[0]  < 0 or startChoice[1] < 0):
-                #print(possibleStartChoice)
-                #print(startChoice)
+                #print(possibleStartChoice) #FOR DEBUGGING PURPOSES
                 possibleStartChoice.remove(startChoice)
+                
+                
 
-
+    #CHOOSE A RANDOM DIRECTION FROM FINISH LINE THEN SET A WALK TILE AND THEN RETURN ITS POSITION
     selector = random.randint(0, len(possibleStartChoice) - 1)
- 
     for element in cells:
         if(element.posInfo == possibleStartChoice[selector]):
-            element.tag = "endPoint"
-            selectedStartChoice = element.posInfo
-            #print(possibleStartChoice)
+            element.tag = "walk"
+            endPointPos = element.posInfo
+            #print(possibleStartChoice) #FOR DEBUGGING PURPOSES
 
-    return selectedStartChoice
+    return endPointPos
 
 
 def carvePath(startPoint, endPoint):
     print(startPoint, endPoint)
+
     #GET NEIGHBOURS
     neighbours = findNeighbours(endPoint)
+    print(neighbours)
     
-    
+    currentExploringDirection = 0
 
 
-   # for element in cells:
-       # if(element.)
+
+    
 
     
 
@@ -139,10 +138,6 @@ def tagCells():
 
         if(element.tag == "wall"):
             element.color = "gray"
-            nacrtaj(element)
-
-        if(element.tag == "endPoint"):
-            element.color = (128, 128, 128)
             nacrtaj(element)
 
         if(element.tag == "finish"):
