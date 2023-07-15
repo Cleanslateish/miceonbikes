@@ -42,16 +42,16 @@ def placeCells():
 def mazeCreation():
     finishX = random.randint(2,15)
     finishY = random.randint(2,15)
-    startPos = [0,0]
+    startPoint = [0,0]
 
     #INITIAL 
-    connectStartFinish(1,[finishX, finishY])
+    carvePath(startPoint, endPoint([finishX, finishY]))
 
 
     #GENERATE
     for element in cells:
         # START
-        if(element.posInfo == startPos):
+        if(element.posInfo == startPoint):
             element.tag = "start"
 
         #FINISH
@@ -66,37 +66,39 @@ def mazeCreation():
            # if(element.posInfo == [finishX, finishY - 1]):
                 #element.tag = "walk"
 
-
-def connectStartFinish(startPos, finishPos):
-    susedi = []
-
-
-    #DECIDE WHICH CELL STARTS THE PATH
-    possibleStartChoice = []
-
-    top =       [finishPos[0]    , finishPos[1] - 1]#TOP
-    topRight =  [finishPos[0] + 1, finishPos[1] - 1]#TOP RIGHT
-    right =     [finishPos[0] + 1, finishPos[1]    ]#RIGHT
-    downRight = [finishPos[0] + 1, finishPos[1] + 1]#DOWN RIGHT
-    down =      [finishPos[0]    , finishPos[1] + 1]#DOWN
-    downLeft =  [finishPos[0] - 1, finishPos[1] + 1]#DOWN LEFT
-    left =      [finishPos[0] - 1, finishPos[1]    ]#LEFT
-    topLeft =   [finishPos[0] - 1, finishPos[1] - 1]#TOP LEFT
+def findNeighbours(currentCell):
+    neighbourList = []
+    top =       [currentCell[0]    , currentCell[1] - 1]#TOP
+    topRight =  [currentCell[0] + 1, currentCell[1] - 1]#TOP RIGHT
+    right =     [currentCell[0] + 1, currentCell[1]    ]#RIGHT
+    downRight = [currentCell[0] + 1, currentCell[1] + 1]#DOWN RIGHT
+    down =      [currentCell[0]    , currentCell[1] + 1]#DOWN
+    downLeft =  [currentCell[0] - 1, currentCell[1] + 1]#DOWN LEFT
+    left =      [currentCell[0] - 1, currentCell[1]    ]#LEFT
+    topLeft =   [currentCell[0] - 1, currentCell[1] - 1]#TOP LEFT
     
-    possibleStartChoice.append(top)
-    possibleStartChoice.append(topRight)
-    possibleStartChoice.append(right)
-    possibleStartChoice.append(downRight)
-    possibleStartChoice.append(down)
-    possibleStartChoice.append(downLeft)
-    possibleStartChoice.append(left)
-    possibleStartChoice.append(topLeft)
+    neighbourList.append(top)
+    neighbourList.append(topRight)
+    neighbourList.append(right)
+    neighbourList.append(downRight)
+    neighbourList.append(down)
+    neighbourList.append(downLeft)
+    neighbourList.append(left)
+    neighbourList.append(topLeft)
+    
+    return neighbourList
+
+def endPoint(finishPos):
+    #DECIDE WHICH CELL STARTS THE PATH
+    selectedStartChoice = []
+
+    possibleStartChoice = findNeighbours(finishPos)
 
     for i in range(8):
         for startChoice in possibleStartChoice:
             if(startChoice[0]  > 15 or startChoice[1] > 15 or startChoice[0]  < 0 or startChoice[1] < 0):
-                print(possibleStartChoice)
-                print(startChoice)
+                #print(possibleStartChoice)
+                #print(startChoice)
                 possibleStartChoice.remove(startChoice)
 
 
@@ -104,25 +106,47 @@ def connectStartFinish(startPos, finishPos):
  
     for element in cells:
         if(element.posInfo == possibleStartChoice[selector]):
-            element.tag = "walk"
-            print(possibleStartChoice)
+            element.tag = "endPoint"
+            selectedStartChoice = element.posInfo
+            #print(possibleStartChoice)
+
+    return selectedStartChoice
+
+
+def carvePath(startPoint, endPoint):
+    print(startPoint, endPoint)
+    #GET NEIGHBOURS
+    neighbours = findNeighbours(endPoint)
+    
+    
+
+
+   # for element in cells:
+       # if(element.)
+
+    
+
 
 def tagCells():
     for element in cells:
         if(element.tag == "start"):
-            element.color = "green"
+            element.color = (33, 209, 79)
             nacrtaj(element)
 
         if(element.tag == "walk"):
-            element.color = (80,200,80)
+            element.color = (82, 82, 82)
             nacrtaj(element)
 
         if(element.tag == "wall"):
             element.color = "gray"
             nacrtaj(element)
 
+        if(element.tag == "endPoint"):
+            element.color = (128, 128, 128)
+            nacrtaj(element)
+
         if(element.tag == "finish"):
-            element.color = (3, 161, 252)
+            element.color = (25, 128, 224)
             nacrtaj(element)
 
 
